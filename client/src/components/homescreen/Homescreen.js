@@ -14,7 +14,8 @@ import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
 import { UpdateListField_Transaction, 
 	UpdateListItems_Transaction, 
 	ReorderItems_Transaction, 
-	EditItem_Transaction } 				from '../../utils/jsTPS';
+	EditItem_Transaction,
+	SortItems_Transaction } 				from '../../utils/jsTPS';
 import WInput from 'wt-frontend/build/components/winput/WInput';
 
 
@@ -33,6 +34,7 @@ const Homescreen = (props) => {
 	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
+	const [SortItems]				= useMutation(mutations.SORT_ITEMS);
 
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
@@ -158,7 +160,23 @@ const Homescreen = (props) => {
 		setActiveList(todo);
 	};
 
-	
+	const sortItems = async (_id, field) => {
+		let opcode;
+		if(field === 'Task') {
+			opcode = 0;
+		}else if(field === 'Due Date'){
+			opcode = 1;
+		}else if(field === 'Status'){
+			opcode = 2;
+		}else if(field === 'Assigned To'){
+			opcode = 3;
+		}
+		console.log(opcode);
+		let transaction = new SortItems_Transaction(_id, opcode, SortItems);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
 	/*
 		Since we only have 3 modals, this sort of hardcoding isnt an issue, if there
 		were more it would probably make sense to make a general modal component, and
@@ -225,6 +243,7 @@ const Homescreen = (props) => {
 									editItem={editItem} reorderItem={reorderItem}
 									setShowDelete={setShowDelete}
 									activeList={activeList} setActiveList={setActiveList}
+									sortItems={sortItems}
 								/>
 							</div>
 						:

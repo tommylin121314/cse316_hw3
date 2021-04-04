@@ -163,6 +163,112 @@ module.exports = {
 			listItems = found.items;
 			return (found.items);
 
+		},
+
+		sortItems: async (_,args) => {
+			//SORT LIST
+			const {_id, opcode } = args;
+			const listId = new ObjectId(_id);
+			let list = await Todolist.findOne({_id: listId});
+			let items = list.items;
+
+			if(opcode === 0) {
+				let sorted = true;
+				for(let i = 0; i < items.length - 1; i++) {
+					if(items[i].description > items[i + 1].description) {
+						sorted = false;
+						break;
+					}
+				}
+				if(!sorted){
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].description > items[j+1].description) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				else{
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].description < items[j+1].description) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				let updated = await Todolist.updateOne({_id: listId}, {items: items});
+			}
+			if(opcode === 1) {
+				let sorted = true;
+				for(let i = 0; i < items.length - 1; i++) {
+					if(items[i].due_date > items[i + 1].due_date) {
+						sorted = false;
+						break;
+					}
+				}
+				if(!sorted){
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].due_date > items[j+1].due_date) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				else{
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].due_date < items[j+1].due_date) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				let updated = await Todolist.updateOne({_id: listId}, {items: items});
+			}
+			if(opcode === 2) {
+				let sorted = true;
+				for(let i = 0; i < items.length - 1; i++) {
+					if(items[i].completed > items[i + 1].completed) {
+						sorted = false;
+						break;
+					}
+				}
+				if(!sorted){
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].completed > items[j+1].completed) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				else{
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].completed < items[j+1].completed) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				let updated = await Todolist.updateOne({_id: listId}, {items: items});
+			}
+			return items;
 		}
 
 	}

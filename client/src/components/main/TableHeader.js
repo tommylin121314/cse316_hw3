@@ -7,10 +7,17 @@ const TableHeader = (props) => {
     const buttonStyle = props.disabled ? ' table-header-button-disabled ' : 'table-header-button ';
     const clickDisabled = () => { };
 
+    const handleSortList = (e) => {
+        console.log(e.target.innerHTML);
+        console.log(props.listId)
+        props.sortItems(props.listId, e.target.innerHTML);
+    }
+
     return (
         <WRow className="table-header">
             <WCol size="3">
-                <WButton className='table-header-section' wType="texted" >Task</WButton>
+                <WButton onClick={handleSortList}
+                    className='table-header-section' wType="texted" >Task</WButton>
             </WCol>
 
             <WCol size="2">

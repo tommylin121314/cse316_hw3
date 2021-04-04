@@ -118,7 +118,22 @@ export class UpdateListItems_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class SortItems_Transaction extends jsTPS_Transaction {
+    constructor(listId, opcode, sortFunction) {
+        super();
+        this.listId = listId;
+        this.opcode = opcode;
+        this.sortFunction = sortFunction;
+    }
 
+    async doTransaction() {
+        let { data } = await this.sortFunction({variables: {_id: this.listId, opcode: this.opcode}});
+    }
+
+    async undoTransaction() {
+
+    }
+}
 
 
 export class jsTPS {
