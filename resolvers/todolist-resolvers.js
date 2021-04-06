@@ -171,7 +171,11 @@ module.exports = {
 			const listId = new ObjectId(_id);
 			let list = await Todolist.findOne({_id: listId});
 			let items = list.items;
-
+			let oldItems = [];
+			for(let i = 0; i < items.length; i++) {
+				oldItems[i] = items[i];
+			}
+			let updated;
 			if(opcode === 0) {
 				let sorted = true;
 				for(let i = 0; i < items.length - 1; i++) {
@@ -202,7 +206,7 @@ module.exports = {
 						}
 					}
 				}
-				let updated = await Todolist.updateOne({_id: listId}, {items: items});
+				updated = await Todolist.updateOne({_id: listId}, {items: items});
 			}
 			if(opcode === 1) {
 				let sorted = true;
@@ -234,7 +238,7 @@ module.exports = {
 						}
 					}
 				}
-				let updated = await Todolist.updateOne({_id: listId}, {items: items});
+				updated = await Todolist.updateOne({_id: listId}, {items: items});
 			}
 			if(opcode === 2) {
 				let sorted = true;
@@ -266,9 +270,36 @@ module.exports = {
 						}
 					}
 				}
-				let updated = await Todolist.updateOne({_id: listId}, {items: items});
+				updated = await Todolist.updateOne({_id: listId}, {items: items});
 			}
-			return items;
+			if(updated) {
+				items = list.items;
+			}
+			let oldString = '';
+			for(let i = 0; i < oldItems.length; i++) {
+				oldString += oldItems[i].id;
+				if(i < oldItems.length - 1) {
+					oldString+='-';
+				}
+			}
+			return oldString;
+		},
+
+		changeItemOrder: async (_, args) => {
+			const { _id, oldOrder } = args;
+			const listId = new ObjectId(_id);
+			let list = await Todolist.findOne({_id: listId});
+			oldOrderArr = oldOrder.split("-");
+			let newItems = [];
+			for(let i = 0; i < oldOrderArr.length; i++) {
+				for(let j = 0; j < list.items.length; j++) {
+					if(list.items[j].id == oldOrderArr[i]) {
+						newItems[i] = list.items[j];
+					}
+				}
+			}
+			let updated = await Todolist.updateOne({_id: listId}, {items: newItems});
+			return 'hello';
 		}
 
 	}

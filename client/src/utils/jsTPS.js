@@ -119,19 +119,22 @@ export class UpdateListItems_Transaction extends jsTPS_Transaction {
 }
 
 export class SortItems_Transaction extends jsTPS_Transaction {
-    constructor(listId, opcode, sortFunction) {
+    constructor(listId, opcode, sortFunction, changeOrderFunction) {
         super();
         this.listId = listId;
         this.opcode = opcode;
         this.sortFunction = sortFunction;
+        this.changeOrderFunction = changeOrderFunction;
     }
 
     async doTransaction() {
-        let { data } = await this.sortFunction({variables: {_id: this.listId, opcode: this.opcode}});
+        this.oldItems = await this.sortFunction({variables: {_id: this.listId, opcode: this.opcode}});
+        this.oldItems = this.oldItems.data.sortItems;
+        console.log(this.oldItems);
     }
 
     async undoTransaction() {
-
+        await this.changeOrderFunction({variables: {_id: this.listId, oldOrder: this.oldItems}});
     }
 }
 

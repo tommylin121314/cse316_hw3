@@ -35,6 +35,7 @@ const Homescreen = (props) => {
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
 	const [SortItems]				= useMutation(mutations.SORT_ITEMS);
+	const [ChangeItemOrder]			= useMutation(mutations.CHANGE_ITEM_ORDER);
 
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
@@ -138,6 +139,7 @@ const Homescreen = (props) => {
 			owner: props.user._id,
 			items: [],
 		}
+		console.log(list);
 		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
 		setActiveList(list)
 	};
@@ -171,8 +173,7 @@ const Homescreen = (props) => {
 		}else if(field === 'Assigned To'){
 			opcode = 3;
 		}
-		console.log(opcode);
-		let transaction = new SortItems_Transaction(_id, opcode, SortItems);
+		let transaction = new SortItems_Transaction(_id, opcode, SortItems, ChangeItemOrder);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	}
