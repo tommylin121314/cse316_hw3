@@ -228,6 +228,7 @@ const Homescreen = (props) => {
 								todolists={todolists} activeid={activeList.id} auth={auth}
 								handleSetActive={handleSetActive} createNewList={createNewList}
 								updateListField={updateListField}
+								activeList={activeList}
 							/>
 							:
 							<></>
@@ -245,6 +246,8 @@ const Homescreen = (props) => {
 									activeList={activeList} setActiveList={setActiveList}
 									sortItems={sortItems}
 									undo={tpsUndo} redo={tpsRedo}
+									canRedo={props.tps.hasTransactionToRedo()}
+									canUndo={props.tps.hasTransactionToUndo()}
 								/>
 							</div>
 						:

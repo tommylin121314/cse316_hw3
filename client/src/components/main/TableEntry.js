@@ -17,6 +17,8 @@ const TableEntry = (props) => {
     const [editingStatus, toggleStatusEdit] = useState(false);
     const [editingAssign, toggleAssignEdit] = useState(false);
 
+    const clickDisabled = () => { };
+
     const handleDateEdit = (e) => {
         toggleDateEdit(false);
         const newDate = e.target.value ? e.target.value : 'No Date';
@@ -108,10 +110,10 @@ const TableEntry = (props) => {
 
             <WCol size="3">
                 <div className='button-group'>
-                    <WButton className="table-entry-buttons" onClick={() => props.reorderItem(data._id, -1)} wType="texted">
+                    <WButton className="table-entry-buttons" onClick={props.index === 0 ? clickDisabled : () => props.reorderItem(data._id, -1)} wType="texted">
                         <i className={props.index === 0 ? "material-icons disabled-button" : "material-icons"}>expand_less</i>
                     </WButton>
-                    <WButton className="table-entry-buttons" onClick={() => props.reorderItem(data._id, 1)} wType="texted">
+                    <WButton className="table-entry-buttons" onClick={props.index === props.length-1 ? clickDisabled : () => props.reorderItem(data._id, 1)} wType="texted">
                         <i className={props.index === props.length-1 ? "material-icons disabled-button" : "material-icons"}>expand_more</i>
                     </WButton>
                     <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data, props.index)} wType="texted">
