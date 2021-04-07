@@ -42,10 +42,10 @@ const TableHeader = (props) => {
 
             <WCol size="3">
                 <div className="table-header-buttons">
-                    <WButton className={`${undoStyle}`} onClick={props.disabled ? clickDisabled :props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                    <WButton className={undoStyle} onClick={props.disabled ? clickDisabled :props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded">
                         <i className="material-icons">undo</i>
                     </WButton>
-                    <WButton className={`${redoStyle}`} onClick={props.disabled ? clickDisabled :props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                    <WButton className={redoStyle} onClick={props.disabled ? clickDisabled :props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded">
                         <i className="material-icons">redo</i>
                     </WButton>
                     <WButton onClick={props.disabled ? clickDisabled : props.addItem} wType="texted" className={`${buttonStyle}`}>
