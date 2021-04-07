@@ -274,6 +274,38 @@ module.exports = {
 				}
 				updated = await Todolist.updateOne({_id: listId}, {items: items});
 			}
+			if(opcode === 3) {
+				let sorted = true;
+				for(let i = 0; i < items.length - 1; i++) {
+					if(items[i].assigned_to > items[i + 1].assigned_to) {
+						sorted = false;
+						break;
+					}
+				}
+				if(!sorted){
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].assigned_to > items[j+1].assigned_to) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				else{
+					for(let i = 0; i < items.length; i++) {
+						for(let j = 0; j < items.length - 1 - i; j++) {
+							if(items[j].assigned_to < items[j+1].assigned_to) {
+								let temp = items[j];
+								items[j] = items[j+1];
+								items[j+1] = temp;
+							}
+						}
+					}
+				}
+				updated = await Todolist.updateOne({_id: listId}, {items: items});
+			}
 			if(updated) {
 				items = list.items;
 			}
