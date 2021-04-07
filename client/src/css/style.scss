@@ -61,6 +61,14 @@ html, body {
     color: $primary-color;
 }
 
+.complete-assign {
+    color: black;
+}
+
+.incomplete-assign {
+    color: firebrick;
+}
+
 .list-item-active {
     background-color: var(--yellow-orange);
     color: black;
@@ -132,6 +140,11 @@ html, body {
 .table-header-button-disabled {
     transition: 0.1s ease-in-out;
     color: var(--warm-black);
+}
+
+.disabled-button {
+    pointer-events: none;
+    color: var(--blue-gray);
 }
 
 .table-header {

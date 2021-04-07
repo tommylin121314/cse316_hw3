@@ -5,6 +5,8 @@ const TableEntry = (props) => {
     const { data } = props;
 
     const completeStyle = data.completed ? ' complete-task' : ' incomplete-task';
+    const assignStyle = data.completed ? ' complete-assign' : ' incomplete-assign';
+
 
     const description = data.description;
     const due_date = data.due_date;
@@ -97,7 +99,7 @@ const TableEntry = (props) => {
                             autofocus={true} defaultValue={assigned_to} type='text'
                             wType='outlined' barAnimation='solid' inputClass='table-input-class'
                         />
-                        : <div classname='table-text'
+                        : <div className={`${assignStyle} table-text`}
                             onClick={() => toggleAssignEdit(!editingAssign)}
                         >{assigned_to}
                         </div>
@@ -107,10 +109,10 @@ const TableEntry = (props) => {
             <WCol size="3">
                 <div className='button-group'>
                     <WButton className="table-entry-buttons" onClick={() => props.reorderItem(data._id, -1)} wType="texted">
-                        <i className="material-icons">expand_less</i>
+                        <i className={props.index === 0 ? "material-icons disabled-button" : "material-icons"}>expand_less</i>
                     </WButton>
                     <WButton className="table-entry-buttons" onClick={() => props.reorderItem(data._id, 1)} wType="texted">
-                        <i className="material-icons">expand_more</i>
+                        <i className={props.index === props.length-1 ? "material-icons disabled-button" : "material-icons"}>expand_more</i>
                     </WButton>
                     <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data, props.index)} wType="texted">
                         <i className="material-icons">close</i>
