@@ -12,9 +12,14 @@ module.exports = {
 			@returns {array} an array of todolist objects on success, and an empty array on failure
 		**/
 		getAllTodos: async (_, __, { req }) => {
+			//const {activeList} = args;
 			const _id = new ObjectId(req.userId);
 			if(!_id) { return([])};
 			const todolists = await Todolist.find({owner: _id});
+			//let temp = todolists[0];
+			//todolists[0] = todolists[1];
+			//todolists[1] = temp;
+			//todolists[0] = activeList;
 			if(todolists) return (todolists);
 
 		},

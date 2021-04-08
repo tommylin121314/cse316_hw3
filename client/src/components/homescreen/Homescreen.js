@@ -142,7 +142,11 @@ const Homescreen = (props) => {
 		console.log(list);
 		props.tps.clearAllTransactions();
 		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
-		setActiveList(list)
+		await refetchTodos(refetch);
+		if(data) {
+			let _id = data.addTodolist;
+			handleSetActive(_id);
+		} 
 	};
 
 	const deleteList = async (_id) => {
@@ -166,6 +170,16 @@ const Homescreen = (props) => {
 
 	const handleSetActive = (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
+		/*let newlists = [];
+		todolists.map(todo => newlists.push(todo));
+		let index = todolists.findIndex(list => list._id === todo._id || list.id === todo.id);
+		for(let i = index; i > 0; i--) {
+			let temp = newlists[i];
+			newlists[i] = newlists[i-1];
+			newlists[i-1] = temp;
+		}
+		todolists = newlists;
+		console.log(todolists);*/
 		setActiveList(todo);
 	};
 
@@ -208,8 +222,17 @@ const Homescreen = (props) => {
 		toggleShowDelete(!showDelete)
 	}
 
+	const handleKeyDown = (e) => {
+		if(e.key === 'z' && e.ctrlKey) {
+			tpsUndo();
+		}
+		else if(e.key === 'y' && e.ctrlKey) {
+			tpsRedo();
+		}
+	}
+
 	return (
-		<WLayout wLayout="header-lside">
+		<WLayout onKeyDown={handleKeyDown} tabIndex={0} wLayout="header-lside">
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
