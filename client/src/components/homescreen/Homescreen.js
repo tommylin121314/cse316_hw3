@@ -224,10 +224,10 @@ const Homescreen = (props) => {
 
 	const handleKeyDown = (e) => {
 		if(e.key === 'z' && e.ctrlKey) {
-			await tpsUndo();
+			tpsUndo();
 		}
 		else if(e.key === 'y' && e.ctrlKey) {
-			await tpsRedo();
+			tpsRedo();
 		}
 	}
 
